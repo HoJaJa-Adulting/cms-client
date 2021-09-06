@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import ContentApi from "../api/contentApi";
+import Cookies from "js-cookie";
 
 const contentReducer = (state, action) => {
   switch (action.type) {
@@ -27,8 +28,17 @@ const getContent = (dispatch) => async (name) => {
 };
 
 const updateContent = (dispatch) => async (name, content) => {
+  const token = Cookies.get("token");
   try {
-    await ContentApi.put(`/page/${name}`, { content });
+    await ContentApi.put(
+      `/page/${name}`,
+      { content },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     dispatch({
       type: "save_content",

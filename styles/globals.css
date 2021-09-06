@@ -59,3 +59,10 @@ a {
   color: #6200ee;
   border: 1px solid #6200ee;
 }
+
+.disabled-button {
+  cursor: not-allowed;
+  background: gainsboro;
+  color: #fff;
+  border: 1px solid lightgrey;
+}

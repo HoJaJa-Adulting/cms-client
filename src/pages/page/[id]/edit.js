@@ -8,8 +8,11 @@ export default function Page({ page }) {
   const { updateContent } = useContext(ContentContext);
 
   const [data, setData] = useState(page.content);
+  const [dataHasChanged, setDataHasChanged] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
+  console.log("Loading:", isLoading);
 
   const dataIsIncomplete =
     data.filter((langObj) => {
@@ -41,11 +44,14 @@ export default function Page({ page }) {
                         <input
                           value={data[index][key]}
                           onChange={(event) => {
-                            setData([
-                              ...data.slice(0, index),
-                              { ...data[index], [key]: event.target.value },
-                              ...data.slice(index + 1),
-                            ]);
+                            [
+                              setData([
+                                ...data.slice(0, index),
+                                { ...data[index], [key]: event.target.value },
+                                ...data.slice(index + 1),
+                              ]),
+                              setDataHasChanged(true),
+                            ];
                           }}
                           style={{
                             border: `${
@@ -70,7 +76,7 @@ export default function Page({ page }) {
         )}
         <button
           className="button secondary-button"
-          onClick={() =>
+          onClick={() => [
             setData(() => {
               const newLangObj = Object.assign(
                 {},
@@ -81,15 +87,25 @@ export default function Page({ page }) {
               const newData = [...data, newLangObj];
 
               return newData;
-            })
-          }
+            }),
+            setDataHasChanged(true),
+          ]}
         >
           New Language
         </button>
         <button
-          className="button primary-button"
-          disabled={dataIsIncomplete}
-          onClick={() => updateContent("Signup", data)}
+          className={`button primary-button${
+            dataIsIncomplete || isLoading || !dataHasChanged
+              ? " disabled-button"
+              : ""
+          }`}
+          disabled={dataIsIncomplete || isLoading || !dataHasChanged}
+          onClick={() => [
+            setIsLoading(true),
+            updateContent("Signup", data),
+            setDataHasChanged(false),
+            setIsLoading(false),
+          ]}
         >
           Save Changes
         </button>
@@ -110,15 +126,6 @@ export async function getServerSideProps({ req, params }) {
     }
   );
   const data = await request.json();
-  console.log("data:", data);
-
-  console.log(
-    "redirect:",
-    data.error && {
-      destination: "/signin",
-      permanent: false,
-    }
-  );
 
   return {
     redirect: data.error && {

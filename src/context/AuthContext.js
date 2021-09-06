@@ -1,6 +1,6 @@
 import createDataContext from "./createDataContext";
 import AuthApi from "../api/contentApi";
-import router, { useRouter } from "next/router";
+import router from "next/router";
 import Cookies from "js-cookie";
 
 const authReducer = (state, action) => {
