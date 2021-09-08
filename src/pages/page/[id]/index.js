@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "../../../api/contentApi";
 import Link from "next/link";
@@ -7,7 +7,11 @@ import { Context as AuthContext } from "../../../context/AuthContext";
 export default function Page({ page }) {
   const router = useRouter();
   const { id } = router.query;
-  const { state } = useContext(AuthContext);
+  const { state, getUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div>
@@ -44,10 +48,12 @@ export default function Page({ page }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const req = await fetch(`${axios.defaults.baseURL}/page/${params.id}`);
-  const data = await req.json();
+  const pageReq = await fetch(`${axios.defaults.baseURL}/page/${params.id}`);
+  const pageData = await pageReq.json();
 
   return {
-    props: { page: data },
+    props: {
+      page: pageData,
+    },
   };
 }

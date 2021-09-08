@@ -12,7 +12,6 @@ export default function Page({ page }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  console.log("Loading:", isLoading);
 
   const dataIsIncomplete =
     data.filter((langObj) => {
@@ -116,7 +115,6 @@ export default function Page({ page }) {
 
 export async function getServerSideProps({ req, params }) {
   const token = req.headers?.cookie?.split("=")[1];
-  console.log("token:", token);
   const request = await fetch(
     `${axios.defaults.baseURL}/page/${params.id}/edit`,
     {

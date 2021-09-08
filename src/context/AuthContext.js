@@ -11,6 +11,7 @@ const authReducer = (state, action) => {
         errorMessage: "",
         token: action.payload.token,
         user: action.payload.user,
+        autoAuthAttempted: action.payload.autoAuthAttempted || false,
       };
     case "add_error":
       return { ...state, errorMessage: action.payload };
@@ -75,6 +76,29 @@ const signin =
     }
   };
 
+const getUser = (dispatch) => async () => {
+  const token = await Cookies.get("token");
+  try {
+    const response = await AuthApi({
+      url: "/user",
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({
+      type: "store_user",
+      payload: { user: response.data, token, autoAuthAttempted: true },
+    });
+  } catch (error) {
+    dispatch({
+      type: "add_error",
+      payload: "No current user",
+    });
+  }
+};
+
 const signout = (dispatch) => async () => {
   const token = Cookies.get("token");
   try {
@@ -104,6 +128,7 @@ export const { Provider, Context } = createDataContext(
   {
     signup,
     signin,
+    getUser,
     signout,
   },
   {
