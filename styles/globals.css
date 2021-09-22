@@ -17,6 +17,7 @@ th {
   padding: 8px 15px;
   border-collapse: collapse;
   text-align: left;
+  height: 1px;
 }
 
 tbody tr:nth-child(odd) {
@@ -55,6 +56,12 @@ a {
 }
 
 .secondary-button {
+  background-color: white;
+  color: #6200ee;
+  border: 1px solid #6200ee;
+}
+
+.clear-button {
   background-color: transparent;
   color: #6200ee;
   border: 1px solid #6200ee;
