@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
 export default function Page({ page }) {
-  const { updateContent } = useContext(ContentContext);
+  const { createSuggestion } = useContext(ContentContext);
 
   const [data, setData] = useState(page.content);
   const [dataHasChanged, setDataHasChanged] = useState(false);
@@ -20,6 +20,18 @@ export default function Page({ page }) {
         0
       );
     }).length !== 0;
+
+  const suggestions = data.flatMap((obj, index) => {
+    const changes = Object.keys(obj)
+      .filter((contentKey) => {
+        return obj[contentKey] !== page.content[index][contentKey];
+      })
+      .map((key) => ({ [key]: obj[key] }));
+
+    return Object.keys(changes).length > 0
+      ? Object.assign({ language: obj.language }, ...changes)
+      : [];
+  });
 
   return (
     <div>
@@ -74,7 +86,7 @@ export default function Page({ page }) {
           <div style={{ height: "53px" }}></div>
         )}
         <button
-          className="button secondary-button"
+          className="button clear-button"
           onClick={() => [
             setData(() => {
               const newLangObj = Object.assign(
@@ -94,14 +106,22 @@ export default function Page({ page }) {
         </button>
         <button
           className={`button primary-button${
-            dataIsIncomplete || isLoading || !dataHasChanged
+            dataIsIncomplete ||
+            isLoading ||
+            !dataHasChanged ||
+            suggestions.length === 0
               ? " disabled-button"
               : ""
           }`}
-          disabled={dataIsIncomplete || isLoading || !dataHasChanged}
+          disabled={
+            dataIsIncomplete ||
+            isLoading ||
+            !dataHasChanged ||
+            suggestions.length === 0
+          }
           onClick={() => [
             setIsLoading(true),
-            updateContent("Signup", data),
+            createSuggestion(page._id, suggestions),
             setDataHasChanged(false),
             setIsLoading(false),
           ]}

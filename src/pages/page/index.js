@@ -17,6 +17,13 @@ export default function Pages({ pages }) {
                       <a className="button primary-button">See details</a>
                     </Link>
                   </td>
+                  <td>
+                    <Link href={`/suggestion`}>
+                      <a className="button secondary-button">
+                        See suggested Updates
+                      </a>
+                    </Link>
+                  </td>
                 </tr>
               );
             })}
