@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
-    "start": "next start"
+    "heroku-postbuild": "npm run build",
+    "start": "next start -p $PORT"
   },
   "engines": {
     "node": "14.16.0"
