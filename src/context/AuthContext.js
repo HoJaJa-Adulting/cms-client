@@ -30,9 +30,10 @@ const authReducer = (state, action) => {
 
 const signup =
   (dispatch) =>
-  async ({ email, password }) => {
+  async ({ name, email, password }) => {
     try {
       const response = await AuthApi.post("/signup", {
+        name,
         email: email.trim(),
         password,
       });
