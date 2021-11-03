@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Context as ContentContext } from "../../../context/ContentContext";
 import axios from "../../../api/contentApi";
-import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
 export default function Page({ page }) {
@@ -134,7 +133,7 @@ export default function Page({ page }) {
 }
 
 export async function getServerSideProps({ req, params }) {
-  const token = req.headers?.cookie?.split("=")[1];
+  const { token } = req.cookies;
   const request = await fetch(
     `${axios.defaults.baseURL}/page/${params.id}/edit`,
     {
@@ -146,10 +145,6 @@ export async function getServerSideProps({ req, params }) {
   const data = await request.json();
 
   return {
-    redirect: data.error && {
-      destination: "/signin",
-      permanent: false,
-    },
     props: { page: data },
   };
 }

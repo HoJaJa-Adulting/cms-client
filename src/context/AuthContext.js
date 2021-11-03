@@ -38,6 +38,7 @@ const signup =
       });
 
       Cookies.set("token", response.data.token);
+      Cookies.set("userId", response.data.user._id);
 
       dispatch({
         type: "store_user",
@@ -62,6 +63,7 @@ const signin =
       });
 
       Cookies.set("token", response.data.token);
+      Cookies.set("userId", response.data.user._id);
 
       dispatch({
         type: "store_user",
@@ -78,9 +80,10 @@ const signin =
 
 const getUser = (dispatch) => async () => {
   const token = await Cookies.get("token");
+  const userId = await Cookies.get("userId");
   try {
     const response = await AuthApi({
-      url: "/user",
+      url: `/user/${userId}`,
       method: "get",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -89,7 +92,7 @@ const getUser = (dispatch) => async () => {
 
     dispatch({
       type: "store_user",
-      payload: { user: response.data, token, autoAuthAttempted: true },
+      payload: { user: response.data.user, token, autoAuthAttempted: true },
     });
   } catch (error) {
     dispatch({
@@ -112,6 +115,7 @@ const signout = (dispatch) => async () => {
       }
     );
     Cookies.remove("token");
+    Cookies.remove("userId");
     dispatch({ type: "signout" });
     router.push("/");
   } catch (error) {

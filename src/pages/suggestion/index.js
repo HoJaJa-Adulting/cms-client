@@ -1,10 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context as ContentContext } from "../../context/ContentContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 import axios from "../../api/contentApi";
 
 export default function Pages({ suggestions, pages }) {
   const { updateContent, rejectSuggestion } = useContext(ContentContext);
+  const { state: userState, getUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const mappedPages = Object.assign(
     {},
@@ -33,8 +39,12 @@ export default function Pages({ suggestions, pages }) {
               <th>Language</th>
               <th>Original Content</th>
               <th>Suggested Change</th>
-              <th>Accept Changes</th>
-              <th>Decline Changes</th>
+              {userState?.user?.role === "admin" && (
+                <>
+                  <th>Accept Changes</th>
+                  <th>Decline Changes</th>
+                </>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -105,40 +115,45 @@ export default function Pages({ suggestions, pages }) {
                         });
                     })}
                   </td>
-                  <td>
-                    <button
-                      className={`button primary-button${
-                        isLoading ? " disabled-button" : ""
-                      }`}
-                      disabled={isLoading}
-                      onClick={() => [
-                        setIsLoading(true),
-                        updateContent(
-                          "Signup",
-                          suggestion._id,
-                          changesToSave.content
-                        ),
-                        setIsLoading(false),
-                      ]}
-                    >
-                      Save Changes
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className={`button primary-button${
-                        isLoading ? " disabled-button" : ""
-                      }`}
-                      disabled={isLoading}
-                      onClick={() => [
-                        setIsLoading(true),
-                        rejectSuggestion(suggestion._id),
-                        setIsLoading(false),
-                      ]}
-                    >
-                      Reject Changes
-                    </button>
-                  </td>
+
+                  {userState?.user?.role === "admin" && (
+                    <>
+                      <td>
+                        <button
+                          className={`button primary-button${
+                            isLoading ? " disabled-button" : ""
+                          }`}
+                          disabled={isLoading}
+                          onClick={() => [
+                            setIsLoading(true),
+                            updateContent(
+                              "Signup",
+                              suggestion._id,
+                              changesToSave.content
+                            ),
+                            setIsLoading(false),
+                          ]}
+                        >
+                          Save Changes
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className={`button primary-button${
+                            isLoading ? " disabled-button" : ""
+                          }`}
+                          disabled={isLoading}
+                          onClick={() => [
+                            setIsLoading(true),
+                            rejectSuggestion(suggestion._id),
+                            setIsLoading(false),
+                          ]}
+                        >
+                          Reject Changes
+                        </button>
+                      </td>
+                    </>
+                  )}
                 </tr>
               );
             })}
@@ -150,7 +165,7 @@ export default function Pages({ suggestions, pages }) {
 }
 
 export async function getServerSideProps({ req }) {
-  const token = req.headers?.cookie?.split("=")[1];
+  const { token } = req.cookies;
   const suggestionReq = await fetch(`${axios.defaults.baseURL}/suggestion/`, {
     headers: {
       Authorization: `Bearer ${token}`,
