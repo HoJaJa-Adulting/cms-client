@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const authRoutes = ["/signin", "/signup"];
+const authRoutes = [
+  "/signin",
+  "/signup",
+  "https://hojaja-cms-client.herokuapp.com/signin",
+  "https://hojaja-cms-client.herokuapp.com/signup",
+];
 
 export function middleware(req: NextRequest) {
   console.log("Req:", req.url);
