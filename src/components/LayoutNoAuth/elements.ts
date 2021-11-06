@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import TopBarComponent from "components/TopBarNoAuth";
-import AuthFormComponent from "components/AuthForm";
 
 export const TopBar = styled(TopBarComponent)`
   margin-bottom: 62px;
@@ -13,5 +12,3 @@ export const Main = styled.main`
   justify-content: flex-start;
   align-items: center;
 `;
-
-export const AuthForm = styled(AuthFormComponent)``;

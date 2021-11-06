@@ -1,17 +1,17 @@
 import React from "react";
 import { TopBar, Main } from "./elements";
 
-type NoAuthLayoutProps = {
+type LayoutNoAuthProps = {
   href: string;
   hrefText: string;
   children: React.ReactNode;
 };
 
-export default function NoAuthLayout({
+export default function LayoutNoAuth({
   href,
   hrefText,
   children,
-}: NoAuthLayoutProps): React.ReactElement {
+}: LayoutNoAuthProps): React.ReactElement {
   return (
     <>
       <TopBar name={"hojaja cms"} buttonText={hrefText} href={href}></TopBar>
