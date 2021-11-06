@@ -1,5 +1,5 @@
 import createDataContext from "./createDataContext";
-import AuthApi from "../api/contentApi";
+import AuthApi from "api/contentApi";
 import router from "next/router";
 import Cookies from "js-cookie";
 
@@ -45,7 +45,7 @@ const signup =
         type: "store_user",
         payload: response.data,
       });
-      router.push("/");
+      router.push("/page");
     } catch (error) {
       dispatch({
         type: "add_error",
@@ -70,7 +70,7 @@ const signin =
         type: "store_user",
         payload: response.data,
       });
-      router.push("/");
+      router.push("/page");
     } catch (error) {
       dispatch({
         type: "add_error",
@@ -118,7 +118,7 @@ const signout = (dispatch) => async () => {
     Cookies.remove("token");
     Cookies.remove("userId");
     dispatch({ type: "signout" });
-    router.push("/");
+    router.push("/signin");
   } catch (error) {
     console.log(error);
     dispatch({

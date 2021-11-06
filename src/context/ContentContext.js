@@ -1,5 +1,5 @@
 import createDataContext from "./createDataContext";
-import ContentApi from "../api/contentApi";
+import ContentApi from "api/contentApi";
 import router from "next/router";
 import Cookies from "js-cookie";
 

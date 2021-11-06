@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import axios from "../../api/contentApi";
+import axios from "api/contentApi";
 import Link from "next/link";
-import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as AuthContext } from "context/AuthContext";
 
 export default function Pages({ pages }) {
   const { state, getUser } = useContext(AuthContext);

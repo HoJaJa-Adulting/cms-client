@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Context as ContentContext } from "../../context/ContentContext";
-import { Context as AuthContext } from "../../context/AuthContext";
-import axios from "../../api/contentApi";
+import { Context as ContentContext } from "context/ContentContext";
+import { Context as AuthContext } from "context/AuthContext";
+import axios from "api/contentApi";
 
 export default function Pages({ suggestions, pages }) {
   const { updateContent, rejectSuggestion } = useContext(ContentContext);

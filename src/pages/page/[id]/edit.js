@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { Context as ContentContext } from "../../../context/ContentContext";
-import axios from "../../../api/contentApi";
+import { Context as ContentContext } from "context/ContentContext";
+import axios from "api/contentApi";
 import { useRouter } from "next/router";
 
 export default function Page({ page }) {

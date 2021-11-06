@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import axios from "../../../api/contentApi";
+import axios from "api/contentApi";
 import Link from "next/link";
-import { Context as AuthContext } from "../../../context/AuthContext";
+import { Context as AuthContext } from "context/AuthContext";
 
 export default function Page({ page }) {
   const router = useRouter();
