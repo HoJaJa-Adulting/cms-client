@@ -13,10 +13,10 @@ export default function MyApp({ Component, pageProps }) {
 
   const getLayout = Component.getLayout || getDefaultLayout;
 
-  return getLayout(
+  return (
     <AuthProvider>
       <ContentProvider>
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
       </ContentProvider>
     </AuthProvider>
   );

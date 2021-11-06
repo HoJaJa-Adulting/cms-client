@@ -27,6 +27,10 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
           <link
+            href="https://fonts.googleapis.com/css?family=Hind&display=optional"
+            rel="stylesheet"
+          />
+          <link
             href="https://fonts.googleapis.com/css?family=Inter&display=optional"
             rel="stylesheet"
           />

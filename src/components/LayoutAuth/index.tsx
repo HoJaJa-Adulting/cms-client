@@ -1,17 +1,27 @@
-import React from "react";
-import { TopBar, Main } from "./elements";
+import React, { useContext, useEffect } from "react";
+import { Context as AuthContext } from "context/AuthContext";
+import { SideBar, TopBar, Main, Container, MainContent } from "./elements";
 
-type LayoutNoAuthProps = {
+type LayoutAuthProps = {
   children: React.ReactNode;
 };
 
-export default function LayoutNoAuth({
+export default function LayoutAuth({
   children,
-}: LayoutNoAuthProps): React.ReactElement {
+}: LayoutAuthProps): React.ReactElement {
+  const { state, getUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
-    <>
-      <TopBar></TopBar>
-      <Main>{children}</Main>
-    </>
+    <Container>
+      <SideBar />
+      <MainContent>
+        <TopBar name={state?.user?.name ?? "-"}></TopBar>
+        <Main>{children}</Main>
+      </MainContent>
+    </Container>
   );
 }

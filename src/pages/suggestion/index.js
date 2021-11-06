@@ -29,138 +29,134 @@ export default function Pages({ suggestions, pages }) {
   );
 
   return (
-    <div>
-      <main>
-        <h1>All Updates</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Page Name</th>
-              <th>Language</th>
-              <th>Original Content</th>
-              <th>Suggested Change</th>
-              {userState?.user?.role === "admin" && (
-                <>
-                  <th>Accept Changes</th>
-                  <th>Decline Changes</th>
-                </>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {suggestions.map((suggestion, index) => {
-              if (suggestion.status && suggestion.status !== "waiting") {
-                return null;
-              }
-              const pageIndex = mappedPages[suggestion.page].index;
-              const changesToSave = Object.assign({}, pages[pageIndex], {
-                content: [
-                  ...pages[pageIndex].content.map((lang) => {
-                    return Object.assign(
-                      {},
-                      lang,
-                      ...suggestion.suggestions.filter((suggLang) => {
-                        return suggLang.language === lang.language;
-                      })
-                    );
-                  }),
-                ],
-              });
+    <>
+      <h1>All Updates</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Page Name</th>
+            <th>Language</th>
+            <th>Original Content</th>
+            <th>Suggested Change</th>
+            {userState?.user?.role === "admin" && (
+              <>
+                <th>Accept Changes</th>
+                <th>Decline Changes</th>
+              </>
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {suggestions.map((suggestion, index) => {
+            if (suggestion.status && suggestion.status !== "waiting") {
+              return null;
+            }
+            const pageIndex = mappedPages[suggestion.page].index;
+            const changesToSave = Object.assign({}, pages[pageIndex], {
+              content: [
+                ...pages[pageIndex].content.map((lang) => {
+                  return Object.assign(
+                    {},
+                    lang,
+                    ...suggestion.suggestions.filter((suggLang) => {
+                      return suggLang.language === lang.language;
+                    })
+                  );
+                }),
+              ],
+            });
 
-              return (
-                <tr
-                  key={`${
-                    mappedPages[suggestion.page].name
-                  }-suggestion-${index}`}
-                >
-                  <td>{mappedPages[suggestion.page].name}</td>
-                  <td>
-                    <div
-                      style={{
-                        display: "flex",
-                        "flex-direction": "column",
-                        "justify-content": "space-evenly",
-                        "align-items": "flex-start",
-                        height: "100%",
-                      }}
-                    >
-                      {suggestion.suggestions.map((sugg) => {
-                        return <p>{sugg.language}</p>;
-                      })}
-                    </div>
-                  </td>
-                  <td>
+            return (
+              <tr
+                key={`${mappedPages[suggestion.page].name}-suggestion-${index}`}
+              >
+                <td>{mappedPages[suggestion.page].name}</td>
+                <td>
+                  <div
+                    style={{
+                      display: "flex",
+                      "flex-direction": "column",
+                      "justify-content": "space-evenly",
+                      "align-items": "flex-start",
+                      height: "100%",
+                    }}
+                  >
                     {suggestion.suggestions.map((sugg) => {
-                      return Object.keys(sugg)
-                        .filter((s) => s !== "language")
-                        .map((s) => {
-                          return (
-                            <p>
-                              {
-                                mappedPages[suggestion.page].content[
-                                  sugg.language
-                                ][s]
-                              }
-                            </p>
-                          );
-                        });
+                      return <p>{sugg.language}</p>;
                     })}
-                  </td>
-                  <td>
-                    {suggestion.suggestions.map((sugg) => {
-                      return Object.keys(sugg)
-                        .filter((s) => s !== "language")
-                        .map((s) => {
-                          return <p>{sugg[s]}</p>;
-                        });
-                    })}
-                  </td>
+                  </div>
+                </td>
+                <td>
+                  {suggestion.suggestions.map((sugg) => {
+                    return Object.keys(sugg)
+                      .filter((s) => s !== "language")
+                      .map((s) => {
+                        return (
+                          <p>
+                            {
+                              mappedPages[suggestion.page].content[
+                                sugg.language
+                              ][s]
+                            }
+                          </p>
+                        );
+                      });
+                  })}
+                </td>
+                <td>
+                  {suggestion.suggestions.map((sugg) => {
+                    return Object.keys(sugg)
+                      .filter((s) => s !== "language")
+                      .map((s) => {
+                        return <p>{sugg[s]}</p>;
+                      });
+                  })}
+                </td>
 
-                  {userState?.user?.role === "admin" && (
-                    <>
-                      <td>
-                        <button
-                          className={`button primary-button${
-                            isLoading ? " disabled-button" : ""
-                          }`}
-                          disabled={isLoading}
-                          onClick={() => [
-                            setIsLoading(true),
-                            updateContent(
-                              "Signup",
-                              suggestion._id,
-                              changesToSave.content
-                            ),
-                            setIsLoading(false),
-                          ]}
-                        >
-                          Save Changes
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          className={`button primary-button${
-                            isLoading ? " disabled-button" : ""
-                          }`}
-                          disabled={isLoading}
-                          onClick={() => [
-                            setIsLoading(true),
-                            rejectSuggestion(suggestion._id),
-                            setIsLoading(false),
-                          ]}
-                        >
-                          Reject Changes
-                        </button>
-                      </td>
-                    </>
-                  )}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </main>
-    </div>
+                {userState?.user?.role === "admin" && (
+                  <>
+                    <td>
+                      <button
+                        className={`button primary-button${
+                          isLoading ? " disabled-button" : ""
+                        }`}
+                        disabled={isLoading}
+                        onClick={() => [
+                          setIsLoading(true),
+                          updateContent(
+                            "Signup",
+                            suggestion._id,
+                            changesToSave.content
+                          ),
+                          setIsLoading(false),
+                        ]}
+                      >
+                        Save Changes
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className={`button primary-button${
+                          isLoading ? " disabled-button" : ""
+                        }`}
+                        disabled={isLoading}
+                        onClick={() => [
+                          setIsLoading(true),
+                          rejectSuggestion(suggestion._id),
+                          setIsLoading(false),
+                        ]}
+                      >
+                        Reject Changes
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 }
 

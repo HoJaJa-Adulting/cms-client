@@ -11,36 +11,34 @@ export default function Pages({ pages }) {
   }, []);
 
   return (
-    <div>
-      <main>
-        <h1>PAGE LIST</h1>
-        <table>
-          <tbody>
-            {pages.map((page) => {
-              return (
-                <tr key={page.name}>
-                  <td>{page.name}</td>
+    <>
+      <h1>PAGE LIST</h1>
+      <table>
+        <tbody>
+          {pages.map((page) => {
+            return (
+              <tr key={page.name}>
+                <td>{page.name}</td>
+                <td>
+                  <Link href={`/page/${page.name}`}>
+                    <a className="button primary-button">See details</a>
+                  </Link>
+                </td>
+                {state?.user?.role === "admin" && (
                   <td>
-                    <Link href={`/page/${page.name}`}>
-                      <a className="button primary-button">See details</a>
+                    <Link href={`/suggestion`}>
+                      <a className="button secondary-button">
+                        See suggested Updates
+                      </a>
                     </Link>
                   </td>
-                  {state?.user?.role === "admin" && (
-                    <td>
-                      <Link href={`/suggestion`}>
-                        <a className="button secondary-button">
-                          See suggested Updates
-                        </a>
-                      </Link>
-                    </td>
-                  )}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </main>
-    </div>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
   );
 }
 

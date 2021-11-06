@@ -33,102 +33,100 @@ export default function Page({ page }) {
   });
 
   return (
-    <div>
-      <main>
-        <h1>EDIT PAGE: {id}</h1>
-        <table>
-          <thead>
-            <tr>
-              {Object.keys(data[0]).map((key) => {
-                return <th key={`header-${key}`}>{key}</th>;
-              })}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((lang, index) => {
-              return (
-                <tr key={`${lang.language}-content`}>
-                  {Object.keys(lang).map((key) => {
-                    return (
-                      <td key={`${lang.language}-${key}`}>
-                        <input
-                          value={data[index][key]}
-                          onChange={(event) => {
-                            [
-                              setData([
-                                ...data.slice(0, index),
-                                { ...data[index], [key]: event.target.value },
-                                ...data.slice(index + 1),
-                              ]),
-                              setDataHasChanged(true),
-                            ];
-                          }}
-                          style={{
-                            border: `${
-                              data[index][key].length === 0
-                                ? "1px solid red"
-                                : "inherit"
-                            }`,
-                          }}
-                        />
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
+    <>
+      <h1>EDIT PAGE: {id}</h1>
+      <table>
+        <thead>
+          <tr>
+            {Object.keys(data[0]).map((key) => {
+              return <th key={`header-${key}`}>{key}</th>;
             })}
-          </tbody>
-        </table>
-        {dataIsIncomplete ? (
-          <p style={{ color: "red" }}>Cannot have empty inputs</p>
-        ) : (
-          <div style={{ height: "53px" }}></div>
-        )}
-        <button
-          className="button clear-button"
-          onClick={() => [
-            setData(() => {
-              const newLangObj = Object.assign(
-                {},
-                ...Object.keys(data[0]).map((key) => ({
-                  [key]: "",
-                }))
-              );
-              const newData = [...data, newLangObj];
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((lang, index) => {
+            return (
+              <tr key={`${lang.language}-content`}>
+                {Object.keys(lang).map((key) => {
+                  return (
+                    <td key={`${lang.language}-${key}`}>
+                      <input
+                        value={data[index][key]}
+                        onChange={(event) => {
+                          [
+                            setData([
+                              ...data.slice(0, index),
+                              { ...data[index], [key]: event.target.value },
+                              ...data.slice(index + 1),
+                            ]),
+                            setDataHasChanged(true),
+                          ];
+                        }}
+                        style={{
+                          border: `${
+                            data[index][key].length === 0
+                              ? "1px solid red"
+                              : "inherit"
+                          }`,
+                        }}
+                      />
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      {dataIsIncomplete ? (
+        <p style={{ color: "red" }}>Cannot have empty inputs</p>
+      ) : (
+        <div style={{ height: "53px" }}></div>
+      )}
+      <button
+        className="button clear-button"
+        onClick={() => [
+          setData(() => {
+            const newLangObj = Object.assign(
+              {},
+              ...Object.keys(data[0]).map((key) => ({
+                [key]: "",
+              }))
+            );
+            const newData = [...data, newLangObj];
 
-              return newData;
-            }),
-            setDataHasChanged(true),
-          ]}
-        >
-          New Language
-        </button>
-        <button
-          className={`button primary-button${
-            dataIsIncomplete ||
-            isLoading ||
-            !dataHasChanged ||
-            suggestions.length === 0
-              ? " disabled-button"
-              : ""
-          }`}
-          disabled={
-            dataIsIncomplete ||
-            isLoading ||
-            !dataHasChanged ||
-            suggestions.length === 0
-          }
-          onClick={() => [
-            setIsLoading(true),
-            createSuggestion(page._id, suggestions),
-            setDataHasChanged(false),
-            setIsLoading(false),
-          ]}
-        >
-          Save Changes
-        </button>
-      </main>
-    </div>
+            return newData;
+          }),
+          setDataHasChanged(true),
+        ]}
+      >
+        New Language
+      </button>
+      <button
+        className={`button primary-button${
+          dataIsIncomplete ||
+          isLoading ||
+          !dataHasChanged ||
+          suggestions.length === 0
+            ? " disabled-button"
+            : ""
+        }`}
+        disabled={
+          dataIsIncomplete ||
+          isLoading ||
+          !dataHasChanged ||
+          suggestions.length === 0
+        }
+        onClick={() => [
+          setIsLoading(true),
+          createSuggestion(page._id, suggestions),
+          setDataHasChanged(false),
+          setIsLoading(false),
+        ]}
+      >
+        Save Changes
+      </button>
+    </>
   );
 }
 
