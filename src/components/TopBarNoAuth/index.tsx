@@ -8,7 +8,7 @@ type TopBarProps = {
   className?: string;
 };
 
-export default function TopBar({
+export default function TopBarNoAuth({
   name,
   href,
   buttonText,
