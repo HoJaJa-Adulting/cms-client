@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://hojaja-cms-server.herokuapp.com", // Enter url of cms server here
+  baseURL: process.env.API_BASEURL, // Enter url of cms server here
 });
