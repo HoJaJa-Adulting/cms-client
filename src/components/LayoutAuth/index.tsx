@@ -12,6 +12,7 @@ export default function LayoutAuth({
 }: LayoutAuthProps): React.ReactElement {
   const { state, getUser } = useContext(AuthContext);
   const router = useRouter();
+  const pageRoute = router.pathname.split("/")[1];
 
   useEffect(() => {
     getUser();
@@ -27,17 +28,17 @@ export default function LayoutAuth({
           {
             name: "Dashboard",
             href: "/",
-            selected: router.pathname === "/",
+            selected: pageRoute === "",
           },
           {
             name: "Pages",
             href: "/page",
-            selected: router.pathname === "/page",
+            selected: pageRoute === "page",
           },
           {
             name: "Suggested Updates",
             href: "/suggestion",
-            selected: router.pathname === "/suggestion",
+            selected: pageRoute === "suggestion",
           },
         ]}
       />
