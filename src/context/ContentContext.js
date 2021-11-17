@@ -50,7 +50,7 @@ const updateContent = (dispatch) => async (name, id, content) => {
   try {
     await ContentApi.put(
       `/page/${name}`,
-      { content },
+      { content, lastUpdated: Date.now() },
       {
         headers: {
           Authorization: `Bearer ${token}`,
